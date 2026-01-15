@@ -1,13 +1,11 @@
 package com.beyond.basic.b1_basic;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
-    String name;
-    int age;
+    private String name;
+    private Integer age;
 }
