@@ -1,9 +1,7 @@
 package com.beyond.basic.b1_basic;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 @Controller
@@ -31,7 +29,6 @@ public class MemberController{
     public String htmlReturn(){
         return "abc";
     }
-
 
     // 2가지 get요청 받기(start line의 url에서 데이터추출)패턴
     // 1)pathVariable일때
@@ -107,7 +104,8 @@ public class MemberController{
     //2-2)
     @PostMapping("/multipart-formdata2")
     @ResponseBody
-    public String multiPartFormData2(@ModelAttribute MImage member, @RequestParam(value="images")List<MultipartFile>list){
+    public String multiPartFormData2(@ModelAttribute MImage member,
+                                     @RequestParam(value="images")List<MultipartFile>list){
         System.out.println(member.getName());
         System.out.println(member.getEmail());
         System.out.println(member.getProfileImage().getOriginalFilename());
@@ -147,5 +145,4 @@ public class MemberController{
         System.out.println(member);
         return "ok";
     }
-
 }
