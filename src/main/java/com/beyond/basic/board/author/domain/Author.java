@@ -1,12 +1,12 @@
 package com.beyond.basic.board.author.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Getter @ToString
 public class Author {
     private Long id;
     private String name;
