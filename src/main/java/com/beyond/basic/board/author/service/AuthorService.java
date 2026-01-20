@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +21,10 @@ public class AuthorService {
     public AuthorService(AuthorJdbcRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
-
     public void create(AuthorCreateDto authorCreateDto) {
+        if(authorRepository.findByEmail(authorCreateDto.getEmail()).isPresent()){
+            throw new IllegalArgumentException("이메일중복입니다.");
+        }
         Author author = Author.builder()
                         .name(authorCreateDto.getName())
                         .email(authorCreateDto.getEmail())
@@ -42,7 +45,8 @@ public class AuthorService {
     public AuthorDetailDto findById(Long id) {
         Author author =null;
         try {
-            author = authorRepository.findById(id).orElseThrow(() -> new NoSuchElementException("존재하지 않습니다."));
+            author = authorRepository.findById(id).orElseThrow(()
+                    -> new NoSuchElementException("엔티티가 존재하지 않습니다."));
         }catch(RuntimeException e){
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -54,8 +58,9 @@ public class AuthorService {
                 .password(author.getPassword())
                 .build();
     }
-
-    public boolean delete(Long id) {
-        return authorRepository.delete(id);
+    public void delete(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(()
+                -> new NoSuchElementException("엔티티가 존재하지 않습니다."));
+        authorRepository.delete(id);
     }
 }

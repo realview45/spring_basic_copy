@@ -80,6 +80,26 @@ public class AuthorJdbcRepository {
         }
         return Optional.ofNullable(author);
     }
+    public Optional<Author> findByEmail(String inputEmail){
+        Author author = null;
+        try {
+            Connection connection = dataSource.getConnection();
+            String sql = "select * from author where email = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1,inputEmail);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                Long id = rs.getLong("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                author = Author.builder().id(id).name(name).password(password).email(email).build();
+            }
+        } catch (SQLException e) {//checked익셉션을 받아 checked익셉션을 던진다.
+            throw new RuntimeException(e);
+        }
+        return Optional.ofNullable(author);
+    }
     public boolean delete(Long inputId){
         int result = 0;
         try {
