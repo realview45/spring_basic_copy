@@ -1,8 +1,9 @@
 package com.beyond.basic.board.author.controller;
-import com.beyond.basic.board.author.common.CommonErrorDto;
+import com.beyond.basic.board.common.CommonErrorDto;
 import com.beyond.basic.board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.board.author.dtos.AuthorListDto;
+import com.beyond.basic.board.author.dtos.AuthorUpdatePwDto;
 import com.beyond.basic.board.author.service.AuthorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,5 +60,9 @@ public class AuthorController {
                     .build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
         }
+    }
+    @PatchMapping("/update/password")
+    public void updatePw(@RequestBody AuthorUpdatePwDto dto){
+        authorService.updatePw(dto);
     }
 }

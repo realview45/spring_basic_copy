@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.beyond.basic.b2_board.author.repository.AuthorMybatisRepository">
+<mapper namespace="com.beyond.basic.board.author.repository.AuthorMybatisRepository">
     <insert id="create" parameterType="com.beyond.basic.board.author.domain.Author">
         insert into author(name, email, password) values(#{name}, #{email}, #{password});
     </insert>

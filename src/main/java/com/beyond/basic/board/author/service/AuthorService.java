@@ -4,9 +4,14 @@ import com.beyond.basic.board.author.domain.Author;
 import com.beyond.basic.board.author.dtos.AuthorCreateDto;
 import com.beyond.basic.board.author.dtos.AuthorDetailDto;
 import com.beyond.basic.board.author.dtos.AuthorListDto;
+import com.beyond.basic.board.author.dtos.AuthorUpdatePwDto;
 import com.beyond.basic.board.author.repository.AuthorJdbcRepository;
+import com.beyond.basic.board.author.repository.AuthorMybatisRepository;
+import com.beyond.basic.board.author.repository.AuthorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -14,11 +19,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class AuthorService {
-    private final AuthorJdbcRepository authorRepository;
-
+    private final AuthorRepository authorRepository;
     @Autowired
-    public AuthorService(AuthorJdbcRepository authorRepository) {
+    public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
     public void create(AuthorCreateDto authorCreateDto) {
@@ -30,9 +35,9 @@ public class AuthorService {
                         .email(authorCreateDto.getEmail())
                         .password(authorCreateDto.getPassword())
                         .build();
-        authorRepository.create(author);
+        authorRepository.save(author);
     }
-
+    @Transactional(readOnly=true)
     public List<AuthorListDto> findAll() {
         return authorRepository.findAll().stream().map(a->AuthorListDto.builder()
                 .id(a.getId())
@@ -41,7 +46,7 @@ public class AuthorService {
                 .build())
                 .collect(Collectors.toList());
     }
-
+    @Transactional(readOnly=true)
     public AuthorDetailDto findById(Long id) {
         Author author =null;
         try {
@@ -61,6 +66,12 @@ public class AuthorService {
     public void delete(Long id) {
         Author author = authorRepository.findById(id).orElseThrow(()
                 -> new NoSuchElementException("엔티티가 존재하지 않습니다."));
-        authorRepository.delete(id);
+        authorRepository.delete(author);
+    }
+    public void updatePw(AuthorUpdatePwDto dto){
+        Author author = authorRepository.findByEmail(dto.getEmail()).orElseThrow(()
+                -> new EntityNotFoundException("entity is not found"));
+        author.updatePw(dto.getPassword());
+        //authorRepository.save(author);
     }
 }

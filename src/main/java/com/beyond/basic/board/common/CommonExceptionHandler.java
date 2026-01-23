@@ -1,5 +1,6 @@
-package com.beyond.basic.board.author.common;
+package com.beyond.basic.board.common;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,6 +30,14 @@ public class CommonExceptionHandler {
     }
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> noSuch(NoSuchElementException e){
+        CommonErrorDto dto = CommonErrorDto.builder()
+                .status("404")
+                .error_message(e.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
+    }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> noSuch(EntityNotFoundException e){
         CommonErrorDto dto = CommonErrorDto.builder()
                 .status("404")
                 .error_message(e.getMessage())

@@ -1,15 +1,15 @@
-package com.beyond.basic.board.author.common;
+package com.beyond.basic.board.author.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-public class CommonErrorDto {
-    String status;
-    String error_message;
+public class AuthorUpdatePwDto {
+    private String email;
+    private String password;
 }
